@@ -1,0 +1,25 @@
+{
+  "name": "tracing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "api": "./node_modules/.bin/ts-node ./packages/api/index.ts",
+    "devices": "./node_modules/.bin/ts-node ./packages/devices/index.ts",
+    "users": "./node_modules/.bin/ts-node ./packages/users/index.ts",
+    "start": "npm run api & npm run devices & npm run users" 
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.7.0",
+    "@types/uuid": "^3.4.7",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "nats": "^1.4.0",
+    "uuid": "^3.4.0"
+  }
+}
