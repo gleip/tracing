@@ -1,7 +1,11 @@
 import { Device } from '../../interfaces';
+import { repositoryPerfomance } from '../../common/decorators';
+import { tracer } from '../tracer';
+import { Span } from 'opentracing';
 
 export class DeviceRepository {
-  constructor() {}
+  private db = 'mongodb';
+  constructor(private parent?: Span) {}
   private devices: Device[] = [
     {
       id: '8d98d0f7-9b28-448a-9c5b-9bbc500727b2',
@@ -22,9 +26,10 @@ export class DeviceRepository {
       connected: true,
     },
   ];
+  @repositoryPerfomance(tracer)
   public async getByRegion(regionId: string): Promise<Device[]> {
     return new Promise(resolve => {
-      setTimeout(() => resolve(this.devices), 50);
+      setTimeout(() => resolve(this.devices), 300);
     });
   }
 }

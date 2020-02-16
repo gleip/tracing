@@ -1,3 +1,5 @@
+import { CARRIER } from '../common/constants';
+
 export interface Location {
   lat: number;
   lng: number;
@@ -22,6 +24,6 @@ export interface ConnectedDevice extends Device {
   location: Location;
 }
 
-export type Msg<D = any> = {
-  trace?: { [key: string]: string };
+export type Msg<D = Object> = {
+  [CARRIER]?: { [key: string]: string };
 } & D;

@@ -11,9 +11,8 @@ export interface GetByRegion {
 
 export async function getByRegion(request: Msg<GetByRegion>) {
   try {
-    const deviceRepository = new DeviceRepository();
-    const locationRepository = new LocationRepository();
-
+    const deviceRepository = new DeviceRepository(this);
+    const locationRepository = new LocationRepository(this);
     const regionId = request.regionId;
     const devices = await deviceRepository.getByRegion(regionId);
 

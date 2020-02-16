@@ -1,8 +1,13 @@
 import * as Nats from 'nats';
 import * as uuid from 'uuid';
+import { subscribePerfomance, publishPerfomance } from './decorators';
+import { Tracer } from './Tracer';
+
+export type Handler<Request = any, Response = any> = (msg: Request) => Promise<Response>;
 
 export class Transport {
   private _client: Nats.Client;
+  constructor(private tracer?: Tracer) {}
   public async connect() {
     return new Promise(resolve => {
       this._client = Nats.connect({
@@ -24,6 +29,7 @@ export class Transport {
   public async disconnect() {
     this._client.close();
   }
+  @publishPerfomance
   public async publish<Request = any, Response = any>(subject: string, data: Request): Promise<Response> {
     const replyId = uuid.v4();
     return new Promise(resolve => {
@@ -34,7 +40,8 @@ export class Transport {
       });
     });
   }
-  public async subscribe<Request = any, Response = any>(subject: string, handler: (msg: Request) => Promise<Response>) {
+  @subscribePerfomance
+  public async subscribe<Request = any, Response = any>(subject: string, handler: Handler<Request, Response>) {
     this._client.subscribe(subject, async (msg: Request, replyId: string) => {
       const result = await handler(msg);
       this._client.publish(replyId, result);

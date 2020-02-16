@@ -3,9 +3,11 @@ import { Transport } from '../common/Transport';
 import { ConnectedDevice } from '../interfaces';
 import { DevicesMethods } from '../common/constants';
 import { GetByRegion } from '../devices/handlers';
+import { Tracer } from '../common/Tracer';
 
 (async () => {
-  const transport = new Transport();
+  const tracer = new Tracer('api');
+  const transport = new Transport(tracer);
   const port = 5000;
 
   await transport.connect();

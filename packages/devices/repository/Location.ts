@@ -1,7 +1,11 @@
 import { Location } from '../../interfaces';
+import { repositoryPerfomance } from '../../common/decorators';
+import { tracer } from '../tracer';
+import { Span } from 'opentracing';
 
 export class LocationRepository {
-  constructor() {}
+  private db = 'redis';
+  constructor(private parent?: Span) {}
   private locations = new Map<string, Location>([
     [
       '8d98d0f7-9b28-448a-9c5b-9bbc500727b2',
@@ -25,10 +29,10 @@ export class LocationRepository {
       },
     ],
   ]);
-
+  @repositoryPerfomance(tracer)
   public async getLocation(deviceId: string): Promise<Location> {
     return new Promise(resolve => {
-      setTimeout(() => resolve(this.locations.get(deviceId)), 40);
+      setTimeout(() => resolve(this.locations.get(deviceId)), 15);
     });
   }
 }

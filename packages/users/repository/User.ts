@@ -1,6 +1,11 @@
 import { User } from '../../interfaces';
+import { repositoryPerfomance } from '../../common/decorators';
+import { tracer } from '../tracer';
+import { Span } from 'opentracing';
 
 export class UserRepository {
+  private db = 'mongodb';
+  constructor(private parent?: Span) {}
   private users: User[] = [
     {
       id: '8dd5c205-33d0-41b0-818d-cfa482914138',
@@ -18,10 +23,11 @@ export class UserRepository {
       address: '',
     },
   ];
-
+  @repositoryPerfomance(tracer)
   public async getByIds(ids: string[]): Promise<User[]> {
     return new Promise(resolve => {
       setTimeout(() => resolve(this.users), 50);
     });
   }
+  public static;
 }

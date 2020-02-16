@@ -7,7 +7,7 @@ export interface GetByIds {
 
 export async function getByIds(request: Msg<GetByIds>) {
   try {
-    const userRepository = new UserRepository();
+    const userRepository = new UserRepository(this);
     const users = await userRepository.getByIds(request.ids);
     return users;
   } catch (error) {
